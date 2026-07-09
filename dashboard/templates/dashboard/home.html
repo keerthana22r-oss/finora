@@ -1,0 +1,21 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>
+    Welcome, {{ user.username }}! Your real dashboard (income/expense summary cards,
+    charts, budget progress) will appear here starting in Phase 3, once we've built
+    Income and Expense tracking in Phase 2.
+</div>
+
+<div class="card p-4">
+    <h5 class="fw-bold">Phase 1 Checkpoint ✅</h5>
+    <p class="text-muted mb-0">
+        Authentication, profile management, and the base layout (this sidebar + navbar)
+        are now working. Next up: Income &amp; Expense CRUD.
+    </p>
+</div>
+{% endblock %}

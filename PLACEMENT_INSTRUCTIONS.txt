@@ -1,0 +1,33 @@
+FINORA - Phase 1 (Step 1.9) File Placement Guide
+==================================================
+
+Extract this zip, then copy files into your existing finora/ project as follows:
+
+1. accounts/models.py          -> finora/accounts/models.py  (overwrite)
+2. accounts/signals.py         -> finora/accounts/signals.py  (new file)
+3. accounts/apps.py            -> finora/accounts/apps.py     (overwrite)
+4. accounts/forms.py           -> finora/accounts/forms.py    (overwrite)
+5. accounts/views.py           -> finora/accounts/views.py    (overwrite)
+6. accounts/urls.py            -> finora/accounts/urls.py     (new file)
+7. accounts/admin.py           -> finora/accounts/admin.py    (overwrite)
+8. accounts/templates/accounts/*.html -> finora/accounts/templates/accounts/ (new folder+files)
+
+9. core/templates/core/base.html -> finora/core/templates/core/base.html (new folder+file)
+
+10. dashboard/views.py          -> finora/dashboard/views.py  (overwrite)
+11. dashboard/urls.py           -> finora/dashboard/urls.py   (new file)
+12. dashboard/templates/dashboard/home.html -> finora/dashboard/templates/dashboard/home.html (new)
+
+13. static/css/style.css        -> finora/static/css/style.css (overwrite)
+
+14. finora_urls_ROOT_PROJECT_urls.py.txt
+    -> RENAME to urls.py and place at finora/finora/urls.py (overwrite the auto-generated one)
+
+AFTER PLACING ALL FILES, run these commands in your activated venv:
+
+    python manage.py makemigrations accounts
+    python manage.py migrate
+    python manage.py createsuperuser   (follow prompts to create an admin login)
+    python manage.py runserver
+
+Then test in your browser - see testing checklist in the chat.
