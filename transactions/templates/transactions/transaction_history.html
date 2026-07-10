@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %}
+{% load finora_extras %}
+
+{% block title %}Transaction History{% endblock %}
+{% block page_title %}Transaction History{% endblock %}
+
+{% block content %}
+<div class="card">
+    {% if transactions %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Category / Source</th>
+                    <th>Description</th>
+                    <th class="text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in transactions %}
+                <tr>
+                    <td>{{ txn.date|date:"d M Y" }}</td>
+                    <td>
+                        {% if txn.txn_type == 'income' %}
+                            <span class="badge bg-success"><i class="bi bi-arrow-down-circle me-1"></i>Income</span>
+                        {% else %}
+                            <span class="badge bg-danger"><i class="bi bi-arrow-up-circle me-1"></i>Expense</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if txn.txn_type == 'income' %}
+                            {{ txn.get_source_display }}
+                        {% else %}
+                            <i class="bi {{ txn.category.icon }} me-1"></i>{{ txn.category.name }}
+                        {% endif %}
+                    </td>
+                    <td class="text-muted">{{ txn.description|default:"—" }}</td>
+                    <td class="text-end fw-semibold {% if txn.txn_type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                        {% if txn.txn_type == 'income' %}+{% else %}-{% endif %}{{ txn.amount|inr }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+        <i class="bi bi-clock-history fs-1 d-block mb-2"></i>
+        No transactions yet. Start by adding
+        <a href="{% url 'transactions:income_add' %}">income</a> or
+        <a href="{% url 'transactions:expense_add' %}">an expense</a>.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

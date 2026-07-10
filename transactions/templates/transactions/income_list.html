@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% load finora_extras %}
+
+{% block title %}Income{% endblock %}
+{% block page_title %}Income{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <span class="text-muted">Total Income:</span>
+        <span class="fs-4 fw-bold text-success">{{ total|inr }}</span>
+    </div>
+    <a href="{% url 'transactions:income_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Add Income
+    </a>
+</div>
+
+<div class="card p-3 mb-3">
+    <form method="get" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label small">Source</label>
+            <select name="source" class="form-select">
+                <option value="">All Sources</option>
+                {% for value, label in source_choices %}
+                    <option value="{{ value }}" {% if request.GET.source == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">From</label>
+            <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label small">To</label>
+            <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    {% if incomes %}
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Description</th>
+                    <th class="text-end">Amount</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for income in incomes %}
+                <tr>
+                    <td>{{ income.date|date:"d M Y" }}</td>
+                    <td><span class="badge bg-success-subtle text-success-emphasis">{{ income.get_source_display }}</span></td>
+                    <td class="text-muted">{{ income.description|default:"—" }}</td>
+                    <td class="text-end fw-semibold">{{ income.amount|inr }}</td>
+                    <td class="text-end">
+                        <a href="{% url 'transactions:income_edit' income.pk %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'transactions:income_delete' income.pk %}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-5 text-muted">
+        <i class="bi bi-cash-coin fs-1 d-block mb-2"></i>
+        No income records yet. <a href="{% url 'transactions:income_add' %}">Add your first one</a>.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

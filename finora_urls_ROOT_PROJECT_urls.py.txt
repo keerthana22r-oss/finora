@@ -1,7 +1,6 @@
 """
 This is the content for: finora/finora/urls.py
-(named finora_urls.py here only to avoid a filename clash during packaging —
- rename it to urls.py when you place it in finora/finora/)
+Rename this file to urls.py and place it at finora/finora/urls.py (overwrite).
 """
 from django.contrib import admin
 from django.urls import path, include
@@ -11,6 +10,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
+    path('', include('transactions.urls')),
     path('', include('dashboard.urls')),
 ]
 

@@ -33,13 +33,18 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white disabled">
+                <a href="{% url 'transactions:income_list' %}" class="nav-link {% if request.resolver_match.url_name == 'income_list' or request.resolver_match.url_name == 'income_add' or request.resolver_match.url_name == 'income_edit' %}active{% else %}text-white{% endif %}">
                     <i class="bi bi-cash-coin me-2"></i> Income
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white disabled">
+                <a href="{% url 'transactions:expense_list' %}" class="nav-link {% if request.resolver_match.url_name == 'expense_list' or request.resolver_match.url_name == 'expense_add' or request.resolver_match.url_name == 'expense_edit' %}active{% else %}text-white{% endif %}">
                     <i class="bi bi-receipt me-2"></i> Expenses
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions:history' %}" class="nav-link {% if request.resolver_match.url_name == 'history' %}active{% else %}text-white{% endif %}">
+                    <i class="bi bi-clock-history me-2"></i> Transactions
                 </a>
             </li>
             <li>
@@ -127,6 +132,21 @@
             <li class="nav-item">
                 <a href="{% url 'dashboard:home' %}" class="nav-link text-white">
                     <i class="bi bi-grid-1x2-fill me-2"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions:income_list' %}" class="nav-link text-white">
+                    <i class="bi bi-cash-coin me-2"></i> Income
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions:expense_list' %}" class="nav-link text-white">
+                    <i class="bi bi-receipt me-2"></i> Expenses
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'transactions:history' %}" class="nav-link text-white">
+                    <i class="bi bi-clock-history me-2"></i> Transactions
                 </a>
             </li>
             <li>

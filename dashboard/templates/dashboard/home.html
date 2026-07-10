@@ -1,21 +1,163 @@
 {% extends 'core/base.html' %}
+{% load finora_extras %}
+{% load static %}
 
 {% block title %}Dashboard{% endblock %}
 {% block page_title %}Dashboard{% endblock %}
 
+{% block extra_css %}
+<style>
+    .chart-card { min-height: 340px; }
+    .chart-container { position: relative; height: 260px; }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="alert alert-info">
-    <i class="bi bi-info-circle me-2"></i>
-    Welcome, {{ user.username }}! Your real dashboard (income/expense summary cards,
-    charts, budget progress) will appear here starting in Phase 3, once we've built
-    Income and Expense tracking in Phase 2.
+
+<!-- MONTH/YEAR FILTER -->
+<form method="get" class="d-flex gap-2 mb-4">
+    <select name="month" class="form-select w-auto" onchange="this.form.submit()">
+        {% for value, label in month_names %}
+            <option value="{{ value }}" {% if value == selected_month %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="year" class="form-select w-auto" onchange="this.form.submit()">
+        {% for y in year_options %}
+            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+<!-- SUMMARY CARDS ROW 1 -->
+<div class="row g-3 mb-3">
+    <div class="col-md-3 col-sm-6">
+        <div class="summary-card border-start border-4 border-success">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-muted small">Total Income</div>
+                    <div class="fs-4 fw-bold">{{ summary.total_income|inr }}</div>
+                </div>
+                <div class="icon-badge bg-success-subtle text-success">
+                    <i class="bi bi-arrow-down-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="summary-card border-start border-4 border-danger">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-muted small">Total Expenses</div>
+                    <div class="fs-4 fw-bold">{{ summary.total_expense|inr }}</div>
+                </div>
+                <div class="icon-badge bg-danger-subtle text-danger">
+                    <i class="bi bi-arrow-up-circle"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="summary-card border-start border-4 {% if summary.is_surplus %}border-primary{% else %}border-warning{% endif %}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-muted small">{% if summary.is_surplus %}Surplus{% else %}Deficit{% endif %}</div>
+                    <div class="fs-4 fw-bold {% if not summary.is_surplus %}text-warning{% endif %}">
+                        {{ summary.surplus_deficit|inr }}
+                    </div>
+                </div>
+                <div class="icon-badge {% if summary.is_surplus %}bg-primary-subtle text-primary{% else %}bg-warning-subtle text-warning{% endif %}">
+                    <i class="bi bi-piggy-bank"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="summary-card border-start border-4 border-info">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="text-muted small">Top Category</div>
+                    {% if summary.top_category_name %}
+                        <div class="fs-5 fw-bold">{{ summary.top_category_name }}</div>
+                        <div class="text-muted small">{{ summary.top_category_amount|inr }}</div>
+                    {% else %}
+                        <div class="fs-6 text-muted">No expenses yet</div>
+                    {% endif %}
+                </div>
+                <div class="icon-badge bg-info-subtle text-info">
+                    <i class="bi {{ summary.top_category_icon|default:'bi-tag' }}"></i>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="card p-4">
-    <h5 class="fw-bold">Phase 1 Checkpoint ✅</h5>
-    <p class="text-muted mb-0">
-        Authentication, profile management, and the base layout (this sidebar + navbar)
-        are now working. Next up: Income &amp; Expense CRUD.
-    </p>
+<!-- COMING SOON ROW (placeholders for later phases) -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="summary-card bg-white text-muted small">
+            <i class="bi bi-wallet2 me-2"></i>Budget usage tracking — arriving in Phase 4
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="summary-card bg-white text-muted small">
+            <i class="bi bi-flag-fill me-2"></i>Savings goal progress — arriving in Phase 5
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="summary-card bg-white text-muted small">
+            <i class="bi bi-arrow-repeat me-2"></i>Subscription costs — arriving in Phase 6
+        </div>
+    </div>
 </div>
+
+<!-- CHARTS ROW 1 -->
+<div class="row g-3 mb-3">
+    <div class="col-lg-6">
+        <div class="card chart-card p-3">
+            <h6 class="fw-bold mb-3">Income vs Expense (Last 6 Months)</h6>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card chart-card p-3">
+            <h6 class="fw-bold mb-3">Expense by Category — {{ selected_month_label }} {{ selected_year }}</h6>
+            <div class="chart-container">
+                {% if doughnut_chart.labels %}
+                    <canvas id="doughnutChart"></canvas>
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                        <div class="text-center">
+                            <i class="bi bi-pie-chart fs-1 d-block mb-2"></i>
+                            No expenses recorded for this month yet.
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CHARTS ROW 2 -->
+<div class="row g-3">
+    <div class="col-12">
+        <div class="card chart-card p-3">
+            <h6 class="fw-bold mb-3">Monthly Spending Trend</h6>
+            <div class="chart-container">
+                <canvas id="trendChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ bar_chart|json_script:"bar-chart-data" }}
+{{ doughnut_chart|json_script:"doughnut-chart-data" }}
+{{ trend_chart|json_script:"trend-chart-data" }}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
