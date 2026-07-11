@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+{% load finora_extras %}
+
+{% block title %}Investments{% endblock %}
+{% block page_title %}Investments{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'investments:investment_add' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Add Investment
+    </a>
+</div>
+
+{% if overview.has_investments %}
+
+<!-- PORTFOLIO SUMMARY -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="summary-card border-start border-4 border-secondary">
+            <div class="text-muted small">Total Invested</div>
+            <div class="fs-4 fw-bold">{{ overview.total_invested|inr }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="summary-card border-start border-4 border-primary">
+            <div class="text-muted small">Current Value</div>
+            <div class="fs-4 fw-bold">{{ overview.total_current_value|inr }}</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="summary-card border-start border-4 {% if overview.is_overall_gain %}border-success{% else %}border-danger{% endif %}">
+            <div class="text-muted small">Overall {% if overview.is_overall_gain %}Gain{% else %}Loss{% endif %}</div>
+            <div class="fs-4 fw-bold {% if overview.is_overall_gain %}text-success{% else %}text-danger{% endif %}">
+                {{ overview.total_gain_loss|inr }}
+                <span class="fs-6">({{ overview.total_gain_loss_percentage|floatformat:1 }}%)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- INDIVIDUAL INVESTMENTS -->
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th class="text-end">Invested</th>
+                    <th class="text-end">Current Value</th>
+                    <th class="text-end">Gain/Loss</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in overview.investment_statuses %}
+                <tr>
+                    <td class="fw-semibold">{{ item.investment.name }}</td>
+                    <td><span class="badge bg-secondary-subtle text-secondary-emphasis">{{ item.investment.get_investment_type_display }}</span></td>
+                    <td>{{ item.investment.date|date:"d M Y" }}</td>
+                    <td class="text-end">{{ item.investment.amount_invested|inr }}</td>
+                    <td class="text-end">{{ item.investment.current_value|inr }}</td>
+                    <td class="text-end {% if item.is_gain %}text-success{% else %}text-danger{% endif %} fw-semibold">
+                        {% if item.is_gain %}+{% endif %}{{ item.gain_loss|inr }}
+                        <div class="small">({{ item.gain_loss_percentage|floatformat:1 }}%)</div>
+                    </td>
+                    <td class="text-end">
+                        <a href="{% url 'investments:investment_edit' item.investment.pk %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'investments:investment_delete' item.investment.pk %}" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% else %}
+<div class="card text-center py-5 text-muted">
+    <i class="bi bi-graph-up-arrow fs-1 d-block mb-2"></i>
+    No investments tracked yet. <a href="{% url 'investments:investment_add' %}">Add your first one</a>.
+</div>
+{% endif %}
+
+{% endblock %}

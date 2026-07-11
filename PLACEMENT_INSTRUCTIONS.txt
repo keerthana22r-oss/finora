@@ -1,34 +1,32 @@
-FINORA - Phase 5 File Placement Guide
-=======================================
+WEALTHORA - Phase 7 File Placement Guide
+=========================================
 
-GOALS APP (new SavingsGoal model + full CRUD + Add Funds):
-1. goals/models.py    -> finora/goals/models.py (overwrite)
-2. goals/services.py  -> finora/goals/services.py (NEW file)
-3. goals/forms.py     -> finora/goals/forms.py (NEW file)
-4. goals/views.py     -> finora/goals/views.py (overwrite)
-5. goals/urls.py      -> finora/goals/urls.py (NEW file)
-6. goals/admin.py     -> finora/goals/admin.py (overwrite)
-7. goals/templates/goals/goal_list.html        -> finora/goals/templates/goals/ (NEW)
-8. goals/templates/goals/goal_form.html         -> finora/goals/templates/goals/ (NEW)
-9. goals/templates/goals/goal_add_funds.html    -> finora/goals/templates/goals/ (NEW)
-10. goals/templates/goals/goal_confirm_delete.html -> finora/goals/templates/goals/ (NEW)
-
-DASHBOARD APP (real Savings Goal Progress card):
-11. dashboard/services.py -> finora/dashboard/services.py (overwrite - adds get_savings_overview)
-12. dashboard/views.py    -> finora/dashboard/views.py (overwrite)
-13. dashboard/templates/dashboard/home.html -> finora/dashboard/templates/dashboard/home.html (overwrite)
+INVESTMENTS APP (new Investment model + full CRUD):
+1. investments/models.py    -> wealthora/investments/models.py (overwrite)
+2. investments/services.py  -> wealthora/investments/services.py (NEW file)
+3. investments/forms.py     -> wealthora/investments/forms.py (NEW file)
+4. investments/views.py     -> wealthora/investments/views.py (overwrite)
+5. investments/urls.py      -> wealthora/investments/urls.py (NEW file)
+6. investments/admin.py     -> wealthora/investments/admin.py (overwrite)
+7. investments/templates/investments/investment_list.html   -> wealthora/investments/templates/investments/ (NEW)
+8. investments/templates/investments/investment_form.html    -> wealthora/investments/templates/investments/ (NEW)
+9. investments/templates/investments/investment_confirm_delete.html -> wealthora/investments/templates/investments/ (NEW)
 
 CORE APP (sidebar):
-14. core/templates/core/base.html -> finora/core/templates/core/base.html (overwrite - enables Savings Goals link)
+10. core/templates/core/base.html -> wealthora/core/templates/core/base.html (overwrite)
 
-ROOT URLS:
-15. finora_urls_ROOT_PROJECT_urls.py.txt
-    -> RENAME to urls.py and place at finora/finora/urls.py (overwrite - adds goals app routing)
+*** IMPORTANT: manually update wealthora/urls.py ***
+(No file included for this anymore -- paste this directly, per your preference)
+See the message in chat for the exact content to paste into wealthora\urls.py
 
-AFTER PLACING ALL FILES, run:
+AFTER PLACING ALL FILES AND UPDATING urls.py, run:
 
-    python manage.py makemigrations goals
+    python manage.py makemigrations investments
     python manage.py migrate
     python manage.py runserver
 
 Then test using the checklist provided in chat.
+
+NOTE: your project root folder is now named "Wealthora" (capital W, outer folder)
+containing the inner Django package "wealthora" (lowercase). Paths below assume
+you are inside the outer Wealthora folder already.

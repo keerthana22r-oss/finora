@@ -1,7 +1,3 @@
-"""
-This is the content for: finora/finora/urls.py
-Rename this file to urls.py and place it at finora/finora/urls.py (overwrite).
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -12,6 +8,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', include('transactions.urls')),
     path('', include('goals.urls')),
+    path('', include('subscriptions.urls')),
+    path('', include('investments.urls')),
     path('', include('dashboard.urls')),
 ]
 

@@ -30,6 +30,7 @@ def home_view(request):
     trend_chart = services.get_monthly_trend_chart_data(request.user, year, month)
     budget_overview = services.get_budget_overview(request.user, year, month)
     savings_overview = services.get_savings_overview(request.user)
+    subscriptions_overview = services.get_subscriptions_overview(request.user)
 
     year_options = list(range(today.year - 3, today.year + 1))
 
@@ -40,6 +41,7 @@ def home_view(request):
         'trend_chart': trend_chart,
         'budget_overview': budget_overview,
         'savings_overview': savings_overview,
+        'subscriptions_overview': subscriptions_overview,
         'selected_month': month,
         'selected_year': year,
         'month_names': MONTH_NAMES,

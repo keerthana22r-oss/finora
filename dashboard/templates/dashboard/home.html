@@ -91,7 +91,7 @@
     </div>
 </div>
 
-<!-- ROW 2: Budget Usage + Savings Goals (both real now) + Subscriptions placeholder -->
+<!-- ROW 2: Budget Usage + Savings Goals + Subscriptions (all real now) -->
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <div class="summary-card h-100">
@@ -145,8 +145,26 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="summary-card bg-white text-muted small h-100">
-            <i class="bi bi-arrow-repeat me-2"></i>Subscription costs — arriving in Phase 6
+        <div class="summary-card h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="text-muted small"><i class="bi bi-arrow-repeat me-1"></i>Subscriptions</div>
+                {% if subscriptions_overview.has_subscriptions and subscriptions_overview.upcoming_count > 0 %}
+                    <span class="badge bg-warning-subtle text-warning-emphasis">
+                        {{ subscriptions_overview.upcoming_count }} due soon
+                    </span>
+                {% endif %}
+            </div>
+            {% if subscriptions_overview.has_subscriptions %}
+                <div class="fs-5 fw-bold">{{ subscriptions_overview.total_monthly|inr }}<span class="fs-6 text-muted">/mo</span></div>
+                <div class="small text-muted">
+                    {{ subscriptions_overview.active_count }} active subscription{{ subscriptions_overview.active_count|pluralize }}
+                </div>
+            {% else %}
+                <div class="text-muted small">
+                    No subscriptions tracked yet.
+                    <a href="{% url 'subscriptions:subscription_add' %}">Add one</a>.
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

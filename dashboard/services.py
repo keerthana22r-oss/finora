@@ -139,9 +139,8 @@ def get_budget_overview(user, year, month):
 def get_savings_overview(user):
     """
     Aggregates ALL savings goals into one overall progress number for the
-    dashboard card. Per-goal detail (monthly required, target date, etc.)
-    lives on the dedicated Savings Goals page from Phase 5.
-    Import is deferred to avoid a circular import with goals/services.py.
+    dashboard card. Import is deferred to avoid a circular import with
+    goals/services.py.
     """
     from goals.models import SavingsGoal
 
@@ -162,4 +161,22 @@ def get_savings_overview(user):
         'total_saved': total_saved,
         'percentage': min(percentage, Decimal('100')),
         'raw_percentage': percentage,
+    }
+
+
+def get_subscriptions_overview(user):
+    """
+    Lightweight dashboard-card version of the subscription overview —
+    just the totals, not the full per-subscription breakdown (that lives
+    on the dedicated Subscriptions page). Import deferred to avoid
+    circular imports between dashboard and subscriptions services.
+    """
+    from subscriptions.services import get_subscription_overview as full_overview
+
+    result = full_overview(user)
+    return {
+        'has_subscriptions': result['active_count'] > 0,
+        'total_monthly': result['total_monthly'],
+        'active_count': result['active_count'],
+        'upcoming_count': result['upcoming_count'],
     }

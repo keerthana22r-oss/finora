@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+{% load finora_extras %}
+
+{% block title %}Delete Investment{% endblock %}
+{% block page_title %}Delete Investment{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <div class="d-flex align-items-center mb-3">
+                <i class="bi bi-exclamation-triangle-fill text-danger fs-3 me-2"></i>
+                <h5 class="mb-0">Are you sure?</h5>
+            </div>
+            <p class="text-muted">
+                You're about to remove <strong>"{{ investment.name }}"</strong>
+                ({{ investment.amount_invested|inr }} invested). This cannot be undone.
+            </p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete It</button>
+                <a href="{% url 'investments:investment_list' %}" class="btn btn-outline-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -62,8 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'finora.urls'
-
+ROOT_URLCONF = 'wealthora.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,7 +79,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'finora.wsgi.application'
+WSGI_APPLICATION = 'wealthora.wsgi.application'
 
 
 # Database
