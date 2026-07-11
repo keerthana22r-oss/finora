@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ExpenseCategory, Income, Expense
+from .models import ExpenseCategory, Income, Expense, Budget
 
 
 @admin.register(ExpenseCategory)
@@ -23,3 +23,10 @@ class ExpenseAdmin(admin.ModelAdmin):
     list_filter = ['category', 'payment_method', 'date', 'user']
     search_fields = ['description']
     date_hierarchy = 'date'
+
+
+@admin.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ['user', 'category', 'month', 'year', 'limit_amount']
+    list_filter = ['year', 'month', 'user']
+    search_fields = ['category__name']

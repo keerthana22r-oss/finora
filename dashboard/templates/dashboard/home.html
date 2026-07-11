@@ -91,20 +91,61 @@
     </div>
 </div>
 
-<!-- COMING SOON ROW (placeholders for later phases) -->
+<!-- ROW 2: Budget Usage + Savings Goals (both real now) + Subscriptions placeholder -->
 <div class="row g-3 mb-4">
     <div class="col-md-4">
-        <div class="summary-card bg-white text-muted small">
-            <i class="bi bi-wallet2 me-2"></i>Budget usage tracking — arriving in Phase 4
+        <div class="summary-card h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="text-muted small"><i class="bi bi-wallet2 me-1"></i>Budget Usage</div>
+                {% if budget_overview.has_budgets %}
+                    <span class="badge bg-{{ budget_overview.color }}-subtle text-{{ budget_overview.color }}-emphasis">
+                        {{ budget_overview.raw_percentage|floatformat:0 }}%
+                    </span>
+                {% endif %}
+            </div>
+            {% if budget_overview.has_budgets %}
+                <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar bg-{{ budget_overview.color }}" style="width: {{ budget_overview.percentage }}%;"></div>
+                </div>
+                <div class="small text-muted">
+                    {{ budget_overview.total_spent|inr }} of {{ budget_overview.total_limit|inr }}
+                </div>
+            {% else %}
+                <div class="text-muted small">
+                    No budgets set for this month.
+                    <a href="{% url 'transactions:budget_add' %}">Create one</a>.
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-4">
-        <div class="summary-card bg-white text-muted small">
-            <i class="bi bi-flag-fill me-2"></i>Savings goal progress — arriving in Phase 5
+        <div class="summary-card h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div class="text-muted small"><i class="bi bi-flag-fill me-1"></i>Savings Goals</div>
+                {% if savings_overview.has_goals %}
+                    <span class="badge bg-primary-subtle text-primary-emphasis">
+                        {{ savings_overview.raw_percentage|floatformat:0 }}%
+                    </span>
+                {% endif %}
+            </div>
+            {% if savings_overview.has_goals %}
+                <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar bg-primary" style="width: {{ savings_overview.percentage }}%;"></div>
+                </div>
+                <div class="small text-muted">
+                    {{ savings_overview.total_saved|inr }} of {{ savings_overview.total_target|inr }}
+                    across {{ savings_overview.goal_count }} goal{{ savings_overview.goal_count|pluralize }}
+                </div>
+            {% else %}
+                <div class="text-muted small">
+                    No savings goals yet.
+                    <a href="{% url 'goals:goal_add' %}">Create one</a>.
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="col-md-4">
-        <div class="summary-card bg-white text-muted small">
+        <div class="summary-card bg-white text-muted small h-100">
             <i class="bi bi-arrow-repeat me-2"></i>Subscription costs — arriving in Phase 6
         </div>
     </div>

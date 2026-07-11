@@ -1,25 +1,21 @@
+from datetime import date
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models import Q
 from itertools import chain
 from operator import attrgetter
 
-from .models import Income, Expense, ExpenseCategory
-from .forms import IncomeForm, ExpenseForm
+from .models import Income, Expense, ExpenseCategory, Budget
+from .forms import IncomeForm, ExpenseForm, BudgetForm, MONTH_CHOICES
+from . import services as budget_services
 
 
 # ---------- INCOME VIEWS ----------
 
 @login_required
 def income_list(request):
-    """
-    Shows only the logged-in user's income records.
-    request.user filtering here is what keeps data private between users.
-    """
     incomes = Income.objects.filter(user=request.user)
 
-    # Optional filters via query params: ?source=salary&date_from=2026-01-01&date_to=2026-01-31
     source = request.GET.get('source')
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
@@ -46,7 +42,7 @@ def income_add(request):
         form = IncomeForm(request.POST)
         if form.is_valid():
             income = form.save(commit=False)
-            income.user = request.user  # set server-side, never trust a hidden form field
+            income.user = request.user
             income.save()
             messages.success(request, 'Income added successfully.')
             return redirect('transactions:income_list')
@@ -57,8 +53,6 @@ def income_add(request):
 
 @login_required
 def income_edit(request, pk):
-    # get_object_or_404 filtered by user=request.user means: if this income
-    # belongs to someone else, Django returns a 404 instead of leaking it.
     income = get_object_or_404(Income, pk=pk, user=request.user)
     if request.method == 'POST':
         form = IncomeForm(request.POST, instance=income)
@@ -151,11 +145,6 @@ def expense_delete(request, pk):
 
 @login_required
 def transaction_history(request):
-    """
-    Combines Income and Expense into one chronological feed.
-    We tag each record with a `txn_type` attribute so the template
-    can tell them apart and style/link them differently.
-    """
     incomes = Income.objects.filter(user=request.user)
     expenses = Expense.objects.filter(user=request.user).select_related('category')
 
@@ -164,12 +153,75 @@ def transaction_history(request):
     for e in expenses:
         e.txn_type = 'expense'
 
-    combined = sorted(
-        chain(incomes, expenses),
-        key=attrgetter('date'),
-        reverse=True
-    )
+    combined = sorted(chain(incomes, expenses), key=attrgetter('date'), reverse=True)
 
-    return render(request, 'transactions/transaction_history.html', {
-        'transactions': combined,
+    return render(request, 'transactions/transaction_history.html', {'transactions': combined})
+
+
+# ---------- BUDGET VIEWS ----------
+
+@login_required
+def budget_list(request):
+    """
+    Shows all budgets for a given month/year (default: current month),
+    each with live-calculated actual spending, remaining amount, and
+    warning status (see transactions/services.py for the math).
+    """
+    today = date.today()
+    try:
+        year = int(request.GET.get('year', today.year))
+        month = int(request.GET.get('month', today.month))
+        if month < 1 or month > 12:
+            month = today.month
+    except (ValueError, TypeError):
+        year, month = today.year, today.month
+
+    budget_statuses = budget_services.get_budgets_for_month(request.user, year, month)
+    year_options = list(range(today.year - 3, today.year + 1))
+
+    return render(request, 'transactions/budget_list.html', {
+        'budget_statuses': budget_statuses,
+        'selected_month': month,
+        'selected_year': year,
+        'month_choices': MONTH_CHOICES,
+        'year_options': year_options,
     })
+
+
+@login_required
+def budget_add(request):
+    if request.method == 'POST':
+        form = BudgetForm(request.POST, user=request.user)
+        if form.is_valid():
+            budget = form.save(commit=False)
+            budget.user = request.user
+            budget.save()
+            messages.success(request, 'Budget created successfully.')
+            return redirect('transactions:budget_list')
+    else:
+        form = BudgetForm(user=request.user)
+    return render(request, 'transactions/budget_form.html', {'form': form, 'action': 'Add'})
+
+
+@login_required
+def budget_edit(request, pk):
+    budget = get_object_or_404(Budget, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = BudgetForm(request.POST, instance=budget, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Budget updated successfully.')
+            return redirect('transactions:budget_list')
+    else:
+        form = BudgetForm(instance=budget, user=request.user)
+    return render(request, 'transactions/budget_form.html', {'form': form, 'action': 'Edit'})
+
+
+@login_required
+def budget_delete(request, pk):
+    budget = get_object_or_404(Budget, pk=pk, user=request.user)
+    if request.method == 'POST':
+        budget.delete()
+        messages.success(request, 'Budget deleted.')
+        return redirect('transactions:budget_list')
+    return render(request, 'transactions/budget_confirm_delete.html', {'budget': budget})

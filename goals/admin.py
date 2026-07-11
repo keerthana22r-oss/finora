@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import SavingsGoal
 
-# Register your models here.
+
+@admin.register(SavingsGoal)
+class SavingsGoalAdmin(admin.ModelAdmin):
+    list_display = ['name', 'user', 'current_amount', 'target_amount', 'target_date']
+    list_filter = ['user']
+    search_fields = ['name']

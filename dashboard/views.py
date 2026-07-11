@@ -14,17 +14,11 @@ MONTH_NAMES = [
 
 @login_required
 def home_view(request):
-    """
-    Main dashboard. Defaults to the current month/year, but accepts
-    ?month=7&year=2026 style query params so the filter dropdown can
-    show any month the user picks.
-    """
     today = date.today()
 
     try:
         year = int(request.GET.get('year', today.year))
         month = int(request.GET.get('month', today.month))
-        # Guard against garbage query params (e.g. ?month=99) crashing the page
         if month < 1 or month > 12:
             month = today.month
     except (ValueError, TypeError):
@@ -34,8 +28,9 @@ def home_view(request):
     bar_chart = services.get_income_vs_expense_chart_data(request.user, year, month)
     doughnut_chart = services.get_category_breakdown_chart_data(request.user, year, month)
     trend_chart = services.get_monthly_trend_chart_data(request.user, year, month)
+    budget_overview = services.get_budget_overview(request.user, year, month)
+    savings_overview = services.get_savings_overview(request.user)
 
-    # Year dropdown: current year and the 3 before it — enough range for a fresher portfolio demo
     year_options = list(range(today.year - 3, today.year + 1))
 
     return render(request, 'dashboard/home.html', {
@@ -43,6 +38,8 @@ def home_view(request):
         'bar_chart': bar_chart,
         'doughnut_chart': doughnut_chart,
         'trend_chart': trend_chart,
+        'budget_overview': budget_overview,
+        'savings_overview': savings_overview,
         'selected_month': month,
         'selected_year': year,
         'month_names': MONTH_NAMES,

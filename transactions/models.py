@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
 
 
@@ -81,3 +81,31 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.category.name} - ₹{self.amount} ({self.date})"
+
+
+class Budget(models.Model):
+    """
+    A spending limit for one category in one specific month.
+    unique_together prevents duplicate budgets for the same
+    (user, category, month, year) combination — edit the existing
+    one instead of creating a second budget for the same period.
+    Actual spending is NOT stored here; it's calculated live from
+    Expense records in transactions/services.py, so it never goes stale.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')
+    category = models.ForeignKey(ExpenseCategory, on_delete=models.CASCADE, related_name='budgets')
+    month = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(12)])
+    year = models.IntegerField(validators=[MinValueValidator(2020), MaxValueValidator(2100)])
+    limit_amount = models.DecimalField(
+        max_digits=12, decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-year', '-month', 'category__name']
+        unique_together = ('user', 'category', 'month', 'year')
+
+    def __str__(self):
+        return f"{self.category.name} budget - ₹{self.limit_amount} ({self.month}/{self.year})"

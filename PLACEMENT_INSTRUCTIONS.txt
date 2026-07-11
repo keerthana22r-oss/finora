@@ -1,17 +1,34 @@
-FINORA - Phase 3 File Placement Guide
+FINORA - Phase 5 File Placement Guide
 =======================================
 
-1. dashboard/services.py              -> finora/dashboard/services.py (NEW file)
-2. dashboard/views.py                 -> finora/dashboard/views.py (overwrite)
-3. dashboard/templates/dashboard/home.html -> finora/dashboard/templates/dashboard/home.html (overwrite)
-4. static/js/dashboard.js             -> finora/static/js/dashboard.js (NEW file)
+GOALS APP (new SavingsGoal model + full CRUD + Add Funds):
+1. goals/models.py    -> finora/goals/models.py (overwrite)
+2. goals/services.py  -> finora/goals/services.py (NEW file)
+3. goals/forms.py     -> finora/goals/forms.py (NEW file)
+4. goals/views.py     -> finora/goals/views.py (overwrite)
+5. goals/urls.py      -> finora/goals/urls.py (NEW file)
+6. goals/admin.py     -> finora/goals/admin.py (overwrite)
+7. goals/templates/goals/goal_list.html        -> finora/goals/templates/goals/ (NEW)
+8. goals/templates/goals/goal_form.html         -> finora/goals/templates/goals/ (NEW)
+9. goals/templates/goals/goal_add_funds.html    -> finora/goals/templates/goals/ (NEW)
+10. goals/templates/goals/goal_confirm_delete.html -> finora/goals/templates/goals/ (NEW)
 
-BEFORE RUNNING: install python-dateutil (used for safe month arithmetic)
+DASHBOARD APP (real Savings Goal Progress card):
+11. dashboard/services.py -> finora/dashboard/services.py (overwrite - adds get_savings_overview)
+12. dashboard/views.py    -> finora/dashboard/views.py (overwrite)
+13. dashboard/templates/dashboard/home.html -> finora/dashboard/templates/dashboard/home.html (overwrite)
 
-    pip install python-dateutil
+CORE APP (sidebar):
+14. core/templates/core/base.html -> finora/core/templates/core/base.html (overwrite - enables Savings Goals link)
 
-No new migrations needed in this phase (no model changes) — just:
+ROOT URLS:
+15. finora_urls_ROOT_PROJECT_urls.py.txt
+    -> RENAME to urls.py and place at finora/finora/urls.py (overwrite - adds goals app routing)
 
+AFTER PLACING ALL FILES, run:
+
+    python manage.py makemigrations goals
+    python manage.py migrate
     python manage.py runserver
 
 Then test using the checklist provided in chat.

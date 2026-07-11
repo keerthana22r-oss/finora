@@ -1,5 +1,6 @@
 from django import forms
-from .models import Income, Expense, ExpenseCategory
+from datetime import date
+from .models import Income, Expense, ExpenseCategory, Budget
 
 
 class IncomeForm(forms.ModelForm):
@@ -27,10 +28,60 @@ class ExpenseForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        # user is passed in explicitly from the view (see views.py) so we can
-        # restrict the category dropdown to only THIS user's categories —
-        # without this, a user could see/pick another user's category list.
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user is not None:
             self.fields['category'].queryset = ExpenseCategory.objects.filter(user=user)
+
+
+MONTH_CHOICES = [
+    (1, 'January'), (2, 'February'), (3, 'March'), (4, 'April'),
+    (5, 'May'), (6, 'June'), (7, 'July'), (8, 'August'),
+    (9, 'September'), (10, 'October'), (11, 'November'), (12, 'December'),
+]
+
+
+class BudgetForm(forms.ModelForm):
+    month = forms.ChoiceField(choices=MONTH_CHOICES, widget=forms.Select(attrs={'class': 'form-select'}))
+
+    class Meta:
+        model = Budget
+        fields = ['category', 'month', 'year', 'limit_amount']
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-select'}),
+            'year': forms.NumberInput(attrs={'class': 'form-control', 'min': '2020', 'max': '2100'}),
+            'limit_amount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'min': '0.01'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        # Same pattern as ExpenseForm: restrict category choices to this user's own categories.
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.user = user
+        if user is not None:
+            self.fields['category'].queryset = ExpenseCategory.objects.filter(user=user)
+        if not self.instance.pk:
+            # Sensible defaults for a brand-new budget: current month/year
+            today = date.today()
+            self.fields['month'].initial = today.month
+            self.fields['year'].initial = today.year
+
+    def clean(self):
+        # Extra safety net: unique_together already enforces this at the DB level,
+        # but catching it here lets us show a friendly error instead of a raw
+        # IntegrityError page if somehow a duplicate slips through.
+        cleaned_data = super().clean()
+        category = cleaned_data.get('category')
+        month = cleaned_data.get('month')
+        year = cleaned_data.get('year')
+
+        if category and month and year and self.user:
+            existing = Budget.objects.filter(
+                user=self.user, category=category, month=month, year=year
+            ).exclude(pk=self.instance.pk)
+            if existing.exists():
+                raise forms.ValidationError(
+                    f'A budget for {category.name} in {dict(MONTH_CHOICES)[int(month)]} {year} already exists. '
+                    'Edit that one instead.'
+                )
+        return cleaned_data

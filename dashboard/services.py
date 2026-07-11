@@ -4,13 +4,11 @@ from decimal import Decimal
 from dateutil.relativedelta import relativedelta
 
 from django.db.models import Sum
-from django.db.models.functions import TruncMonth
 
 from transactions.models import Income, Expense
 
 
 def get_month_bounds(year, month):
-    """Returns (first_day, last_day) date objects for the given month/year."""
     first_day = date(year, month, 1)
     last_day_num = calendar.monthrange(year, month)[1]
     last_day = date(year, month, last_day_num)
@@ -18,11 +16,6 @@ def get_month_bounds(year, month):
 
 
 def get_summary_data(user, year, month):
-    """
-    Core dashboard numbers for one month:
-    total income, total expenses, surplus/deficit, and top spending category.
-    Uses Sum() aggregation so the database does the math, not Python loops.
-    """
     first_day, last_day = get_month_bounds(year, month)
 
     income_qs = Income.objects.filter(user=user, date__gte=first_day, date__lte=last_day)
@@ -51,17 +44,9 @@ def get_summary_data(user, year, month):
 
 
 def get_income_vs_expense_chart_data(user, year, month, months_back=6):
-    """
-    Returns labels + income/expense totals for the last `months_back` months
-    (including the selected month), for the grouped bar chart.
-    """
     selected = date(year, month, 1)
-    labels = []
-    income_totals = []
-    expense_totals = []
+    labels, income_totals, expense_totals = [], [], []
 
-    # Walk backwards from the selected month so the chart always ends
-    # on whatever month the user has filtered to, not necessarily "today".
     for i in range(months_back - 1, -1, -1):
         target_date = selected - relativedelta(months=i)
         first_day, last_day = get_month_bounds(target_date.year, target_date.month)
@@ -82,7 +67,6 @@ def get_income_vs_expense_chart_data(user, year, month, months_back=6):
 
 
 def get_category_breakdown_chart_data(user, year, month):
-    """Expense totals grouped by category, for the doughnut chart. Only non-zero categories shown."""
     first_day, last_day = get_month_bounds(year, month)
 
     rows = (
@@ -98,10 +82,8 @@ def get_category_breakdown_chart_data(user, year, month):
 
 
 def get_monthly_trend_chart_data(user, year, month, months_back=6):
-    """Expense totals per month for the trend line chart — same window as the bar chart."""
     selected = date(year, month, 1)
-    labels = []
-    totals = []
+    labels, totals = [], []
 
     for i in range(months_back - 1, -1, -1):
         target_date = selected - relativedelta(months=i)
@@ -115,3 +97,69 @@ def get_monthly_trend_chart_data(user, year, month, months_back=6):
         totals.append(float(month_total))
 
     return {'labels': labels, 'values': totals}
+
+
+def get_budget_overview(user, year, month):
+    """Aggregates ALL budgets for the month into one overall percentage."""
+    from transactions.models import Budget
+
+    budgets = Budget.objects.filter(user=user, year=year, month=month)
+
+    if not budgets.exists():
+        return {'has_budgets': False}
+
+    total_limit = budgets.aggregate(total=Sum('limit_amount'))['total'] or Decimal('0')
+
+    first_day, last_day = get_month_bounds(year, month)
+    budgeted_category_ids = budgets.values_list('category_id', flat=True)
+    total_spent = Expense.objects.filter(
+        user=user, category_id__in=budgeted_category_ids,
+        date__gte=first_day, date__lte=last_day
+    ).aggregate(total=Sum('amount'))['total'] or Decimal('0')
+
+    percentage = (total_spent / total_limit * 100) if total_limit > 0 else Decimal('0')
+
+    if percentage >= 100:
+        color = 'danger'
+    elif percentage >= 80:
+        color = 'warning'
+    else:
+        color = 'success'
+
+    return {
+        'has_budgets': True,
+        'total_limit': total_limit,
+        'total_spent': total_spent,
+        'percentage': min(percentage, Decimal('100')),
+        'raw_percentage': percentage,
+        'color': color,
+    }
+
+
+def get_savings_overview(user):
+    """
+    Aggregates ALL savings goals into one overall progress number for the
+    dashboard card. Per-goal detail (monthly required, target date, etc.)
+    lives on the dedicated Savings Goals page from Phase 5.
+    Import is deferred to avoid a circular import with goals/services.py.
+    """
+    from goals.models import SavingsGoal
+
+    goals = SavingsGoal.objects.filter(user=user)
+
+    if not goals.exists():
+        return {'has_goals': False}
+
+    total_target = goals.aggregate(total=Sum('target_amount'))['total'] or Decimal('0')
+    total_saved = goals.aggregate(total=Sum('current_amount'))['total'] or Decimal('0')
+
+    percentage = (total_saved / total_target * 100) if total_target > 0 else Decimal('0')
+
+    return {
+        'has_goals': True,
+        'goal_count': goals.count(),
+        'total_target': total_target,
+        'total_saved': total_saved,
+        'percentage': min(percentage, Decimal('100')),
+        'raw_percentage': percentage,
+    }
