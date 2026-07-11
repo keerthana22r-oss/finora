@@ -1,23 +1,10 @@
 
 # Wealthora — Smart Personal Finance & Expense Intelligence Platform
->>>>>>> d78966b (phases7)
+>>>>>>>
 
 Wealthora is a full-stack personal finance management web application built with Django and MySQL. It helps users track income, expenses, monthly budgets, savings goals, and recurring subscriptions through an interactive dashboard with live charts and spending insights.
 
-=======
-<<<<<<< HEAD
-still we are in a phase 5 of our project 
-project is in work will update soon
-this is current status of the project
-<img width="1898" height="907" alt="image" src="https://github.com/user-attachments/assets/6b5fe50e-bcfc-438c-a938-0e7d05256ce4" />
-
-=======
-# Wealthora — Smart Personal Finance & Expense Intelligence Platform
->>>>>>> d78966b (phases7)
-
-Wealthora is a full-stack personal finance management web application built with Django and MySQL. It helps users track income, expenses, monthly budgets, savings goals, and recurring subscriptions through an interactive dashboard with live charts and spending insights.
-
->>>>>>> f7b1277 (6)
+>>>>>>> 
 > 🚧 **Project Status: In active development.** Phases 1–6 are complete and functional. See the roadmap below for what's built and what's coming next.
 
 ## Tech Stack
