@@ -1,7 +1,8 @@
 # 💰 Wealthora – Smart Personal Finance & Expense Intelligence Platform
 
 <p align="center">
-  <img src="screenshots/dashboard.png" alt="Wealthora Dashboard" width="100%">
+<img width="1917" height="910" alt="image" src="https://github.com/user-attachments/assets/0b3e0f11-5185-4044-b991-08ac8e915886" />
+
 </p>
 
 <p align="center">
@@ -134,7 +135,7 @@ Automatically calculates:
 
 ---
 
-## 📈 Investment Tracker *(Phase 7)*
+## 📈 Investment Tracker 
 
 Coming Soon
 
@@ -147,7 +148,7 @@ Features Planned:
 
 ---
 
-## 🧠 Financial Insights *(Phase 8)*
+## 🧠 Financial Insights 
 
 Coming Soon
 
@@ -161,7 +162,7 @@ Automatic insights such as:
 
 ---
 
-## 📄 Reports & Analytics *(Phase 9)*
+## 📄 Reports & Analytics 
 
 Coming Soon
 
@@ -317,89 +318,16 @@ http://127.0.0.1:8000
 > Add your dashboard screenshot here
 
 ```
-screenshots/dashboard.png
+<img width="1913" height="907" alt="image" src="https://github.com/user-attachments/assets/bf3334d9-8b36-47f5-9ca4-eb3a09056c35" />
+
 ```
 
 ## Income
 
 ```
-screenshots/income.png
-```
-
-## Expenses
+<img width="1914" height="904" alt="image" src="https://github.com/user-attachments/assets/954efd16-c9b6-4e8c-a1e5-a9e7e9310e9b" />
 
 ```
-screenshots/expenses.png
-```
-
-## Budgets
-
-```
-screenshots/budgets.png
-```
-
-## Savings Goals
-
-```
-screenshots/savings.png
-```
-
-## Subscriptions
-
-```
-screenshots/subscriptions.png
-```
-
----
-
-# 🗺 Roadmap
-
-## ✅ Phase 1
-
-- Authentication
-
-## ✅ Phase 2
-
-- Income Management
-
-## ✅ Phase 3
-
-- Expense Management
-
-## ✅ Phase 4
-
-- Dashboard Analytics
-
-## ✅ Phase 5
-
-- Budget Management
-
-## ✅ Phase 6
-
-- Savings Goals
-
-## ✅ Phase 7
-
-- Subscription Tracker
-
-## 🚧 Phase 8
-
-- Investment Tracker
-
-## 🚧 Phase 9
-
-- Financial Insights Engine
-
-## 🚧 Phase 10
-
-- Reports & Analytics
-
-## 🚧 Phase 11
-
-- Deployment & Production
-
----
-
 # 🎯 Future Enhancements
 
 - AI Spending Prediction
