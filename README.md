@@ -256,29 +256,6 @@ pip install -r requirements.txt
 ```
 
 ---
-
-### Configure Environment
-
-Create a `.env` file.
-
-Example:
-
-```env
-SECRET_KEY=your-secret-key
-
-DEBUG=True
-
-DB_NAME=wealthora
-
-DB_USER=root
-
-DB_PASSWORD=yourpassword
-
-DB_HOST=localhost
-
-DB_PORT=3306
-```
-
 ---
 
 ### Apply Migrations
