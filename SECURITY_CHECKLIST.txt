@@ -1,0 +1,75 @@
+WEALTHORA - Phase 10 Security Review Checklist
+================================================
+Work through each item and confirm. This is verification, not new code —
+everything listed here should already be true based on how we built each
+phase, but it's worth checking deliberately before calling this "done."
+
+1. DATA ISOLATION (most important)
+-----------------------------------
+[ ] Log in as User A, note the URL of one of their income/expense/budget/
+    goal/subscription/investment edit or delete pages (e.g. /income/5/edit/)
+[ ] Log out, log in as a DIFFERENT user (User B)
+[ ] Manually type User A's edit/delete URL into the browser while logged
+    in as User B
+[ ] CONFIRM: you get a 404 Not Found, NOT the other user's data and NOT
+    an error page revealing internal details
+    (This works because every view uses get_object_or_404(Model, pk=pk,
+    user=request.user) — the user filter means Django can't find the
+    record at all if it belongs to someone else.)
+
+2. AUTHENTICATION REQUIRED ON EVERY PAGE
+------------------------------------------
+[ ] Log out completely
+[ ] Try visiting each of these directly by URL:
+    /  (dashboard)
+    /income/
+    /expenses/
+    /budgets/
+    /goals/
+    /subscriptions/
+    /investments/
+    /insights/
+    /reports/
+[ ] CONFIRM: every single one redirects you to the login page
+    (This works because of @login_required on every view function.)
+
+3. CSRF PROTECTION
+-------------------
+[ ] View page source on any form (e.g. Add Income) and confirm you see
+    a hidden input like <input type="hidden" name="csrfmiddlewaretoken"...>
+[ ] This should be true on every form across the whole app — we used
+    {% csrf_token %} consistently
+
+4. DESTRUCTIVE ACTIONS REQUIRE CONFIRMATION + POST
+----------------------------------------------------
+[ ] Confirm every Delete button leads to a confirmation page (not an
+    instant delete on click)
+[ ] Confirm the Subscription toggle-active button only works via a POST
+    form, not a plain GET link (check subscription_list.html — it's
+    wrapped in <form method="post">)
+
+5. ENVIRONMENT / SECRETS
+--------------------------
+[ ] Confirm .env is listed in .gitignore (never committed to GitHub)
+[ ] Confirm SECRET_KEY is loaded from .env via decouple, not hardcoded
+    in settings.py
+[ ] Confirm DB_PASSWORD is never printed anywhere in templates or logs
+
+6. PRODUCTION READINESS (for when you eventually deploy)
+------------------------------------------------------------
+[ ] DEBUG = True is fine for local development but MUST be set to False
+    before any real deployment — with DEBUG=False, our custom 404.html
+    and 500.html pages take over instead of Django's default debug pages
+    (which would otherwise leak your file paths, settings, and code)
+[ ] ALLOWED_HOSTS is currently empty ([]) — before deploying, this needs
+    your actual domain/IP added, e.g. ALLOWED_HOSTS = ['yourapp.com']
+
+7. INPUT VALIDATION SPOT-CHECK
+----------------------------------
+[ ] Try submitting a negative amount in Add Income/Expense — should be
+    rejected (MinValueValidator on the model)
+[ ] Try creating a duplicate Budget for the same category/month/year —
+    should show a friendly validation error, not crash
+[ ] Try deleting an ExpenseCategory that has expenses attached (via
+    Django admin) — should be BLOCKED, since Expense.category uses
+    on_delete=PROTECT

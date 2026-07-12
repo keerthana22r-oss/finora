@@ -1,32 +1,26 @@
-WEALTHORA - Phase 7 File Placement Guide
-=========================================
+WEALTHORA - Phase 10 File Placement Guide
+===========================================
 
-INVESTMENTS APP (new Investment model + full CRUD):
-1. investments/models.py    -> wealthora/investments/models.py (overwrite)
-2. investments/services.py  -> wealthora/investments/services.py (NEW file)
-3. investments/forms.py     -> wealthora/investments/forms.py (NEW file)
-4. investments/views.py     -> wealthora/investments/views.py (overwrite)
-5. investments/urls.py      -> wealthora/investments/urls.py (NEW file)
-6. investments/admin.py     -> wealthora/investments/admin.py (overwrite)
-7. investments/templates/investments/investment_list.html   -> wealthora/investments/templates/investments/ (NEW)
-8. investments/templates/investments/investment_form.html    -> wealthora/investments/templates/investments/ (NEW)
-9. investments/templates/investments/investment_confirm_delete.html -> wealthora/investments/templates/investments/ (NEW)
+1. templates/404.html -> wealthora/templates/404.html (NEW - project-level templates folder, NOT inside an app)
+2. templates/500.html -> wealthora/templates/500.html (NEW - same folder)
 
-CORE APP (sidebar):
-10. core/templates/core/base.html -> wealthora/core/templates/core/base.html (overwrite)
+3. .gitignore -> wealthora/.gitignore (OVERWRITE your existing one with this finalized version)
 
-*** IMPORTANT: manually update wealthora/urls.py ***
-(No file included for this anymore -- paste this directly, per your preference)
-See the message in chat for the exact content to paste into wealthora\urls.py
+4. SECURITY_CHECKLIST.txt -> keep anywhere handy, e.g. wealthora/SECURITY_CHECKLIST.txt
+   This is for YOU to read and manually verify -- not code to run.
 
-AFTER PLACING ALL FILES AND UPDATING urls.py, run:
+5. DEPLOYMENT_NOTES.md -> wealthora/DEPLOYMENT_NOTES.md
+   Reference doc for when you're ready to deploy live.
 
-    python manage.py makemigrations investments
-    python manage.py migrate
-    python manage.py runserver
+NOTE: 404.html and 500.html only activate when DEBUG=False in settings.py.
+With DEBUG=True (your current local dev setting), Django always shows its
+own detailed debug error pages instead -- that's normal and expected.
+To actually SEE your custom 404 page while testing locally, you can
+temporarily set DEBUG=False and ALLOWED_HOSTS=['127.0.0.1', 'localhost']
+in your .env/settings, then visit a nonsense URL like /this-does-not-exist/.
+Remember to set DEBUG back to True afterward for continued local development.
 
-Then test using the checklist provided in chat.
-
-NOTE: your project root folder is now named "Wealthora" (capital W, outer folder)
-containing the inner Django package "wealthora" (lowercase). Paths below assume
-you are inside the outer Wealthora folder already.
+STILL NEEDED FROM YOU:
+- Run `pip freeze > requirements.txt` and paste the output in chat so I
+  can clean it up into a final requirements.txt
+- Paste your current README.md content if you'd like a final polish pass

@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load finora_extras %}
+
+{% block title %}Insights{% endblock %}
+{% block page_title %}Insights{% endblock %}
+
+{% block content %}
+
+<form method="get" class="d-flex gap-2 mb-4">
+    <select name="month" class="form-select w-auto" onchange="this.form.submit()">
+        {% for value, label in month_names %}
+            <option value="{{ value }}" {% if value == selected_month %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="year" class="form-select w-auto" onchange="this.form.submit()">
+        {% for y in year_options %}
+            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if insights_list %}
+<div class="row g-3">
+    {% for insight in insights_list %}
+    <div class="col-12">
+        <div class="card p-3 d-flex flex-row align-items-center border-start border-4 border-{{ insight.color }}">
+            <div class="icon-badge bg-{{ insight.color }}-subtle text-{{ insight.color }} me-3 flex-shrink-0">
+                <i class="bi {{ insight.icon }}"></i>
+            </div>
+            <div>{{ insight.message }}</div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card text-center py-5 text-muted">
+    <i class="bi bi-lightbulb fs-1 d-block mb-2"></i>
+    Not enough data yet to generate insights for this month.
+    <div class="small mt-1">Add some income, expenses, or budgets, and check back here.</div>
+</div>
+{% endif %}
+
+{% endblock %}

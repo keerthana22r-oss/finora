@@ -65,7 +65,12 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link text-white disabled">
+                <a href="{% url 'insights:insights_list' %}" class="nav-link {% if request.resolver_match.namespace == 'insights' %}active{% else %}text-white{% endif %}">
+                    <i class="bi bi-lightbulb me-2"></i> Insights
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'reports:reports_home' %}" class="nav-link {% if request.resolver_match.namespace == 'reports' %}active{% else %}text-white{% endif %}">
                     <i class="bi bi-bar-chart-fill me-2"></i> Reports
                 </a>
             </li>
@@ -163,6 +168,16 @@
             <li>
                 <a href="{% url 'investments:investment_list' %}" class="nav-link text-white">
                     <i class="bi bi-graph-up-arrow me-2"></i> Investments
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'insights:insights_list' %}" class="nav-link text-white">
+                    <i class="bi bi-lightbulb me-2"></i> Insights
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'reports:reports_home' %}" class="nav-link text-white">
+                    <i class="bi bi-bar-chart-fill me-2"></i> Reports
                 </a>
             </li>
             <li>

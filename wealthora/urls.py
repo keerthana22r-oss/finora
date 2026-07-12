@@ -10,6 +10,8 @@ urlpatterns = [
     path('', include('goals.urls')),
     path('', include('subscriptions.urls')),
     path('', include('investments.urls')),
+    path('', include('insights.urls')),
+    path('', include('reports.urls')),
     path('', include('dashboard.urls')),
 ]
 

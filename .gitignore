@@ -1,0 +1,21 @@
+venv/
+__pycache__/
+*.pyc
+.env
+db.sqlite3
+staticfiles/
+media/
+.vscode/
+.idea/
+*.log
+*.pot
+*.pyo
+local_settings.py
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Migrations note: migrations ARE committed (not ignored) — this is
+# intentional. Django migrations should be version-controlled so
+# anyone cloning the repo can run `migrate` and get the same schema.
