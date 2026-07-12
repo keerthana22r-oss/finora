@@ -295,16 +295,16 @@ http://127.0.0.1:8000
 > Add your dashboard screenshot here
 
 ```
-<img width="1913" height="907" alt="image" src="https://github.com/user-attachments/assets/bf3334d9-8b36-47f5-9ca4-eb3a09056c35" />
 
 ```
+<img width="1913" height="907" alt="image" src="https://github.com/user-attachments/assets/bf3334d9-8b36-47f5-9ca4-eb3a09056c35" />
 
 ## Income
 
 ```
+```
 <img width="1914" height="904" alt="image" src="https://github.com/user-attachments/assets/954efd16-c9b6-4e8c-a1e5-a9e7e9310e9b" />
 
-```
 # 🎯 Future Enhancements
 
 - AI Spending Prediction
