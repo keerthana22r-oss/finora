@@ -1,29 +1,56 @@
-# 💰 Wealthora – Smart Personal Finance & Expense Intelligence Platform
+# 💰 Wealthora
+
+### Smart Personal Finance Management Platform built with Django
 
 <p align="center">
-<img width="1917" height="910" alt="image" src="https://github.com/user-attachments/assets/0b3e0f11-5185-4044-b991-08ac8e915886" />
-
+<img width="1917" height="910" alt="Wealthora Dashboard" src="https://github.com/user-attachments/assets/0b3e0f11-5185-4044-b991-08ac8e915886" />
 </p>
 
 <p align="center">
 
-![Django](https://img.shields.io/badge/Django-5.x-green?style=for-the-badge&logo=django)
-![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)
-![MySQL](https://img.shields.io/badge/MySQL-Database-orange?style=for-the-badge&logo=mysql)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?style=for-the-badge&logo=bootstrap)
+![Version](https://img.shields.io/badge/Version-v1.0-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Django](https://img.shields.io/badge/Django-5.x-green?style=for-the-badge\&logo=django)
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge\&logo=python)
+![MySQL](https://img.shields.io/badge/MySQL-Database-orange?style=for-the-badge\&logo=mysql)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5-purple?style=for-the-badge\&logo=bootstrap)
 ![Chart.js](https://img.shields.io/badge/Chart.js-Analytics-red?style=for-the-badge)
 
 </p>
 
 ---
 
-## 📖 Overview
+# 📖 Overview
 
-**Wealthora** is a full-stack **Personal Finance Management System** built using **Django** and **MySQL**.
+**Wealthora** is a full-stack **Personal Finance Management System** built with **Django**, **Python**, and **MySQL**.
 
-The application helps users manage their finances by tracking income, expenses, monthly budgets, savings goals, subscriptions, investments, and financial insights through an interactive analytics dashboard.
+It enables users to manage their finances efficiently by tracking income, expenses, budgets, savings goals, and recurring subscriptions while providing interactive dashboards and insightful financial analytics.
 
-The goal of Wealthora is to provide a clean, intelligent, and user-friendly platform that helps users understand where their money goes and make better financial decisions.
+The project is designed to simulate a real-world finance application and demonstrates full-stack development, database design, authentication, analytics, and responsive UI development.
+
+---
+
+# 🚀 Project Status
+
+**Current Version:** **v1.0**
+
+**Status:** 🟢 Active Development
+
+### ✅ Completed Modules
+
+* Authentication
+* Dashboard
+* Income Management
+* Expense Management
+* Budget Management
+* Savings Goals
+* Subscription Tracker
+
+### 🚧 Currently Working On
+
+* Investment Tracker
+* Financial Insights
+* Reports & Export
 
 ---
 
@@ -31,179 +58,219 @@ The goal of Wealthora is to provide a clean, intelligent, and user-friendly plat
 
 ## 🔐 Authentication
 
-- User Registration
-- Secure Login & Logout
-- Profile Management
-- Change Password
-- Session-based Authentication
+* User Registration
+* Secure Login & Logout
+* Change Password
+* Profile Management
+* Session-based Authentication
 
 ---
 
 ## 💵 Income Management
 
-- Add Income
-- Edit Income
-- Delete Income
-- Monthly Filtering
-- Category Management
-- Transaction History
+* Add Income
+* Edit Income
+* Delete Income
+* Category Management
+* Monthly Filtering
+* Transaction History
 
 ---
 
 ## 💸 Expense Management
 
-- Add Expenses
-- Update Expenses
-- Delete Expenses
-- Expense Categories
-- Search & Filter
-- Monthly Tracking
+* Add Expenses
+* Edit Expenses
+* Delete Expenses
+* Expense Categories
+* Search & Filter
+* Monthly Expense Tracking
 
 ---
 
 ## 📊 Smart Dashboard
 
-Interactive dashboard showing:
+Interactive dashboard displaying:
 
-- Total Income
-- Total Expenses
-- Monthly Surplus
-- Highest Spending Category
-- Budget Usage
-- Savings Goal Progress
-- Active Subscription Summary
+* Total Income
+* Total Expenses
+* Monthly Balance
+* Highest Spending Category
+* Budget Usage
+* Savings Goal Progress
+* Subscription Summary
 
-Charts include:
+### Charts
 
-- Income vs Expense (Bar Chart)
-- Expense Category Distribution (Doughnut Chart)
-- Monthly Spending Trend
-- Dynamic Month & Year Filters
+* Income vs Expense
+* Expense Category Distribution
+* Monthly Spending Trend
+* Dynamic Month & Year Filtering
 
 ---
 
 ## 🎯 Budget Management
 
-Create monthly budgets for categories.
+Create and monitor monthly budgets.
 
 Features include:
 
-- Budget Progress Bars
-- Live Spending Tracking
-- 80% Warning
-- 100% Limit Alert
-- Budget Exceeded Indicator
+* Category-wise Budgets
+* Budget Progress Bars
+* Live Spending Tracking
+* 80% Warning Indicator
+* Budget Limit Alerts
+* Remaining Budget Calculation
 
 ---
 
 ## 🏦 Savings Goals
 
-Manage financial goals with:
+Track financial goals with:
 
-- Target Amount
-- Current Savings
-- Progress Bar
-- Add Funds
-- Remaining Amount
-- Estimated Monthly Savings Required
+* Target Amount
+* Current Savings
+* Remaining Amount
+* Progress Tracking
+* Add Funds
+* Estimated Monthly Savings
 
 ---
 
 ## 🔄 Subscription Tracker
 
-Track recurring payments including:
+Manage recurring subscriptions such as:
 
-- Netflix
-- Spotify
-- Prime
-- Insurance
-- Gym Membership
-- Custom Subscriptions
+* Netflix
+* Spotify
+* Amazon Prime
+* Insurance
+* Gym Membership
+* Custom Services
 
 Supports:
 
-- Weekly
-- Monthly
-- Quarterly
-- Yearly
+* Weekly
+* Monthly
+* Quarterly
+* Yearly Plans
 
 Automatically calculates:
 
-- Next Payment Date
-- Monthly Cost
-- Annual Cost
+* Next Payment Date
+* Monthly Cost
+* Annual Cost
 
 ---
 
-## 📈 Investment Tracker 
+# 🧠 Planned Features
 
-Coming Soon
+The following modules are part of the upcoming roadmap.
 
-Features Planned:
+## 📈 Investment Tracker
 
-- Investment Portfolio
-- Profit & Loss
-- Asset Allocation
-- Returns Analysis
-
----
-
-## 🧠 Financial Insights 
-
-Coming Soon
-
-Automatic insights such as:
-
-- Highest Spending Category
-- Budget Warnings
-- Spending Trends
-- Savings Suggestions
-- Financial Health Score
+* Investment Portfolio
+* Profit & Loss
+* Asset Allocation
+* Investment Performance
 
 ---
 
-## 📄 Reports & Analytics 
+## 💡 Financial Insights
 
-Coming Soon
+Automatic insights including:
 
-- Monthly Reports
-- CSV Export
-- PDF Export
-- Expense Analysis
-- Income Reports
+* Spending Trends
+* Budget Warnings
+* Savings Suggestions
+* Financial Health Score
+* Highest Spending Category Detection
+
+---
+
+## 📄 Reports & Analytics
+
+* Monthly Reports
+* CSV Export
+* PDF Export
+* Expense Analysis
+* Income Reports
+
+---
+
+## 🤖 Future AI Features
+
+* AI Spending Prediction
+* Smart Expense Categorization
+* Personalized Saving Suggestions
+* Expense Forecasting
 
 ---
 
 # 🛠 Tech Stack
 
-| Technology | Used For |
-|------------|----------|
-| Python | Backend |
-| Django | Web Framework |
-| MySQL | Database |
-| HTML5 | Frontend |
-| CSS3 | Styling |
-| Bootstrap 5 | Responsive UI |
-| JavaScript | Client-side Functionality |
-| Chart.js | Data Visualization |
+| Technology  | Purpose                   |
+| ----------- | ------------------------- |
+| Python      | Backend Development       |
+| Django      | Web Framework             |
+| MySQL       | Database                  |
+| HTML5       | Frontend Structure        |
+| CSS3        | Styling                   |
+| Bootstrap 5 | Responsive UI             |
+| JavaScript  | Client-side Functionality |
+| Chart.js    | Data Visualization        |
+
+---
+
+# 🏗 Project Architecture
+
+```text
+User
+   │
+   ▼
+Authentication
+   │
+   ▼
+Dashboard
+   │
+   ├───────────────┐
+   ▼               ▼
+Income         Expenses
+   │               │
+   └──────┬────────┘
+          ▼
+      Budget Manager
+          │
+          ▼
+    Savings Goals
+          │
+          ▼
+ Subscription Tracker
+          │
+          ▼
+     Analytics Engine
+          │
+          ▼
+      MySQL Database
+```
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 wealthora/
 │
-├── accounts/
-├── dashboard/
-├── income/
-├── expenses/
-├── budgets/
-├── savings/
-├── subscriptions/
-├── investments/
-├── insights/
-├── reports/
+├── accounts/          # User authentication
+├── dashboard/         # Dashboard & analytics
+├── income/            # Income management
+├── expenses/          # Expense management
+├── budgets/           # Budget tracking
+├── savings/           # Savings goals
+├── subscriptions/     # Subscription tracker
+├── investments/       # Planned module
+├── insights/          # Planned module
+├── reports/           # Planned module
 │
 ├── templates/
 ├── static/
@@ -217,9 +284,25 @@ wealthora/
 
 ---
 
-# 🚀 Installation
+# 🎓 Skills Demonstrated
 
-### Clone Repository
+* Django Authentication
+* CRUD Operations
+* Django ORM
+* MySQL Database Design
+* MVC Architecture
+* Responsive Web Design
+* Bootstrap UI
+* Chart.js Integration
+* Session Management
+* Form Validation
+* Git & GitHub Workflow
+
+---
+
+# ⚙ Installation
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/yourusername/wealthora.git
@@ -229,19 +312,19 @@ cd wealthora
 
 ---
 
-### Create Virtual Environment
+## Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-Windows
+### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-Linux / macOS
+### Linux / macOS
 
 ```bash
 source venv/bin/activate
@@ -249,24 +332,25 @@ source venv/bin/activate
 
 ---
 
-### Install Dependencies
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
----
 
-### Apply Migrations
+## Apply Migrations
 
 ```bash
+python manage.py makemigrations
+
 python manage.py migrate
 ```
 
 ---
 
-### Create Superuser
+## Create Superuser
 
 ```bash
 python manage.py createsuperuser
@@ -274,16 +358,16 @@ python manage.py createsuperuser
 
 ---
 
-### Run Server
+## Run Development Server
 
 ```bash
 python manage.py runserver
 ```
 
-Open:
+Open your browser:
 
-```
-http://127.0.0.1:8000
+```text
+http://127.0.0.1:8000/
 ```
 
 ---
@@ -292,38 +376,97 @@ http://127.0.0.1:8000
 
 ## Dashboard
 
-> Add your dashboard screenshot here
+<img width="1913" height="907" alt="Dashboard" src="https://github.com/user-attachments/assets/bf3334d9-8b36-47f5-9ca4-eb3a09056c35" />
 
-```
+---
 
-```
-<img width="1913" height="907" alt="image" src="https://github.com/user-attachments/assets/bf3334d9-8b36-47f5-9ca4-eb3a09056c35" />
+## Income Management
 
-## Income
+<img width="1914" height="904" alt="Income" src="https://github.com/user-attachments/assets/954efd16-c9b6-4e8c-a1e5-a9e7e9310e9b" />
 
-```
-```
-<img width="1914" height="904" alt="image" src="https://github.com/user-attachments/assets/954efd16-c9b6-4e8c-a1e5-a9e7e9310e9b" />
+---
 
-# 🎯 Future Enhancements
+> More screenshots will be added as new modules are completed.
 
-- AI Spending Prediction
-- OCR Receipt Scanner
-- Email Expense Reports
-- Bank Statement Import
-- Dark Mode
-- Multi-Currency Support
-- Mobile Responsive UI
-- Notifications & Reminders
+---
+
+# 🛣 Development Roadmap
+
+## ✅ Version 1.0
+
+* Authentication
+* Income Management
+* Expense Management
+* Dashboard
+* Budget Management
+* Savings Goals
+* Subscription Tracker
+
+---
+
+## 🚧 Version 1.1
+
+* Reports Module
+* CSV Export
+* PDF Export
+* Improved Dashboard Analytics
+
+---
+
+## 📅 Version 1.2
+
+* Investment Tracker
+* Financial Insights
+* Advanced Charts
+* Search Improvements
+
+---
+
+## 🔮 Version 2.0
+
+* AI Expense Prediction
+* OCR Receipt Scanner
+* Email Reports
+* Bank Statement Import
+* Multi-Currency Support
+* Dark Mode
+* Notification System
+
+---
+
+# 💡 Why Wealthora?
+
+Many finance applications are either too complex for everyday users or lock advanced features behind paid subscriptions.
+
+Wealthora was created as a practical full-stack application that focuses on simplicity, usability, and meaningful financial insights while demonstrating modern Django development practices.
+
+---
+
+# 🤝 Contributing
+
+Contributions, suggestions, and feature requests are always welcome.
+
+If you have ideas to improve Wealthora:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Submit a Pull Request
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
 
 ---
 
 # 👩‍💻 Author
 
-**Keerthana K R**
+## **Keerthana K R**
 
-Python Full Stack Developer
+**Aspiring Software Engineer | Python Full Stack Developer**
 
-Portfolio Project built using Django.
+Passionate about building scalable web applications using Django, Python, and MySQL while continuously improving software engineering skills through real-world projects.
 
-If you like this project, consider giving it a ⭐ on GitHub!
+⭐ **If you found this project useful, consider giving it a Star on GitHub!**
